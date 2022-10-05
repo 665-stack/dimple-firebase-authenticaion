@@ -1,5 +1,5 @@
 import './App.css';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import app from './firebase.init';
 import { useState } from 'react';
 
@@ -10,6 +10,8 @@ function App() {
 
   // providers
   const googleProvider = new GoogleAuthProvider();
+
+  const githubProvider = new GithubAuthProvider();
 
   // sign in
   const handleGoogleSignIn = () => {
@@ -24,6 +26,19 @@ function App() {
         console.error(error)
       })
   }
+  const handleGithubSignIn = () => {
+    signInWithPopup(auth, githubProvider)
+      .then(result => {
+        const user = result.user;
+        setUser(user);
+        console.log(result.user);
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  }
+
+
 
   // sign out
   const handleSignOut = () => {
@@ -41,7 +56,13 @@ function App() {
 
 
       <button className='sign-in-button' onClick={handleGoogleSignIn}>Google Sign In</button>
+
+      <button className='sign-in-button' onClick={handleGithubSignIn}>Github Sign In</button>
+
       <button className='sign-out-button' onClick={handleSignOut}>Sign Out</button>
+
+
+
 
       <div className='user-info'>
         <p> name: {user.displayName}</p>
